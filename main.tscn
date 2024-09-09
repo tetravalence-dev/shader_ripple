@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://bsvu6qf2abp0"]
+[gd_scene load_steps=9 format=3 uid="uid://bsvu6qf2abp0"]
 
 [ext_resource type="Shader" path="res://ripple.gdshader" id="1_6wc4e"]
+[ext_resource type="Script" path="res://main.gd" id="1_7of0s"]
 [ext_resource type="Texture2D" uid="uid://gobpj1jf7e5i" path="res://icon.svg" id="2_d5723"]
 [ext_resource type="Shader" path="res://ripple_ci.gdshader" id="3_vi4dx"]
 [ext_resource type="Texture2D" uid="uid://bljp5e6k7umhl" path="res://icon_ci.svg" id="4_t4icx"]
@@ -8,25 +9,30 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wfbep"]
 render_priority = 0
 shader = ExtResource("1_6wc4e")
-shader_parameter/angle = 98.182
 shader_parameter/color = Color(0, 1, 1, 1)
-shader_parameter/icon = ExtResource("2_d5723")
 shader_parameter/num_cells = 9.0
-shader_parameter/smoothness = 0.98
 shader_parameter/speed = 1.39
+shader_parameter/smoothness = 0.98
+shader_parameter/angle = 98.182
+shader_parameter/icon = ExtResource("2_d5723")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_7qyy3"]
 material = SubResource("ShaderMaterial_wfbep")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_i7wmj"]
 shader = ExtResource("3_vi4dx")
-shader_parameter/angle = null
 shader_parameter/color = Color(0.839216, 0, 0.901961, 1)
-shader_parameter/num_cells = 5.0
-shader_parameter/smoothness = null
-shader_parameter/speed = null
+shader_parameter/color1 = Color(0, 0, 0, 0)
+shader_parameter/color2 = Color(0.345098, 0.843137, 0.333333, 0.498039)
+shader_parameter/num_cells = 6.0
+shader_parameter/speed = 1.0
+shader_parameter/smoothness = 1.38
+shader_parameter/angle = 45.0
+shader_parameter/enabled = true
+shader_parameter/start_time = 0.0
 
 [node name="Node3D" type="Node3D"]
+script = ExtResource("1_7of0s")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.707107, -0.707107, 0, 0.707107, 0.707107, 0, 0.720534, 0)
@@ -36,3 +42,18 @@ mesh = SubResource("PlaneMesh_7qyy3")
 material = SubResource("ShaderMaterial_i7wmj")
 position = Vector2(321, 321)
 texture = ExtResource("4_t4icx")
+
+[node name="Button" type="Button" parent="."]
+offset_left = 758.0
+offset_top = 115.0
+offset_right = 1097.0
+offset_bottom = 238.0
+text = "activate
+(uncomment line 40 and comment out line 41 of the shader to use this)"
+autowrap_mode = 2
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.5
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
